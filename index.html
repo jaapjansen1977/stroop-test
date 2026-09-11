@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071527" />
+    <meta
+      name="description"
+      content="Nederlandstalige visuele Strooptest van 45 seconden met mondelinge antwoorden."
+    />
+    <title>Strooptest - 45 seconden</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071527'/%3E%3Ccircle cx='22' cy='23' r='9' fill='%23D7263D'/%3E%3Ccircle cx='42' cy='23' r='9' fill='%231769E0'/%3E%3Ccircle cx='22' cy='43' r='9' fill='%23008A4B'/%3E%3Ccircle cx='42' cy='43' r='9' fill='%23F2C230'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: #071527;
+        color: #f7fbff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 12% 10%, rgba(23, 105, 224, 0.19), transparent 30rem),
+          radial-gradient(circle at 90% 90%, rgba(0, 138, 75, 0.14), transparent 28rem),
+          #071527;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .shell {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: clamp(1rem, 4vw, 3rem);
+      }
+
+      .card {
+        width: min(52rem, 100%);
+        padding: clamp(1.5rem, 4vw, 3rem);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 1.5rem;
+        background: rgba(10, 30, 52, 0.9);
+        box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.32);
+        backdrop-filter: blur(12px);
+      }
+
+      .eyebrow {
+        margin: 0 0 0.6rem;
+        color: #8ec5ff;
+        font-size: 0.9rem;
+        font-weight: 750;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 7vw, 4.8rem);
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+      }
+
+      .lead {
+        max-width: 42rem;
+        margin: 1.35rem 0 0;
+        color: #d9e7f5;
+        font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+        line-height: 1.55;
+      }
+
+      .instruction {
+        margin: 1.5rem 0 0;
+        padding: 1.1rem 1.2rem;
+        border-left: 0.3rem solid #4ea2ff;
+        border-radius: 0.4rem 0.9rem 0.9rem 0.4rem;
+        background: rgba(255, 255, 255, 0.07);
+        font-size: 1.08rem;
+        line-height: 1.5;
+      }
+
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin: 1.5rem 0 0;
+      }
+
+      .fact {
+        min-height: 5rem;
+        padding: 0.9rem;
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        border-radius: 0.9rem;
+        background: rgba(1, 13, 27, 0.38);
+      }
+
+      .fact strong,
+      .fact span {
+        display: block;
+      }
+
+      .fact strong {
+        font-size: 1.3rem;
+      }
+
+      .fact span {
+        margin-top: 0.25rem;
+        color: #adc2d5;
+        font-size: 0.9rem;
+        line-height: 1.35;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+      }
+
+      .button {
+        min-height: 3.35rem;
+        padding: 0.85rem 1.25rem;
+        border: 0;
+        border-radius: 0.85rem;
+        cursor: pointer;
+        font-weight: 750;
+        transition: transform 140ms ease, filter 140ms ease, background 140ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.07);
+      }
+
+      .button:focus-visible {
+        outline: 0.2rem solid #ffffff;
+        outline-offset: 0.2rem;
+      }
+
+      .button-primary {
+        background: #4ea2ff;
+        color: #04111f;
+      }
+
+      .button-secondary {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.08);
+        color: #f7fbff;
+      }
+
+      .fine-print {
+        margin: 1rem 0 0;
+        color: #9eb4c8;
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .stage {
+        position: fixed;
+        inset: 0;
+        display: none;
+        grid-template-rows: auto 1fr auto;
+        min-height: 100vh;
+        padding: clamp(1rem, 3vw, 2rem);
+        background: #071527;
+      }
+
+      .stage.active {
+        display: grid;
+      }
+
+      .stage-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        color: #b9cad9;
+        font-size: clamp(0.95rem, 2vw, 1.1rem);
+        font-weight: 700;
+      }
+
+      .stage-main {
+        display: grid;
+        place-items: center;
+        min-height: 0;
+      }
+
+      .stimulus {
+        max-width: 100%;
+        font-size: clamp(4.5rem, 20vw, 15rem);
+        font-weight: 900;
+        line-height: 0.9;
+        letter-spacing: -0.055em;
+        text-align: center;
+        text-transform: uppercase;
+        text-shadow: 0 0.05em 0.2em rgba(0, 0, 0, 0.32);
+        user-select: none;
+      }
+
+      .countdown {
+        font-size: clamp(8rem, 30vw, 22rem);
+        font-weight: 900;
+        line-height: 0.8;
+        color: #ffffff;
+      }
+
+      .stage-footer {
+        min-height: 0.75rem;
+      }
+
+      .progress-track {
+        overflow: hidden;
+        height: 0.55rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .progress-bar {
+        width: 0%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #4ea2ff, #6ee7b7);
+      }
+
+      .result-number {
+        margin: 0.7rem 0 0;
+        font-size: clamp(3.2rem, 10vw, 6.4rem);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 620px) {
+        .facts {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .stage {
+          padding: 1rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell" id="home">
+      <section class="card" aria-labelledby="title">
+        <p class="eyebrow">Visuele dubbeltaak</p>
+        <h1 id="title">Strooptest</h1>
+        <p class="lead">
+          Noem steeds hardop de <strong>kleur van de letters</strong>. Lees het woord zelf niet voor.
+        </p>
+
+        <div class="instruction">
+          Voorbeeld: staat het woord <strong>ROOD</strong> in blauwe letters, zeg dan
+          <strong>“blauw”</strong>.
+        </div>
+
+        <div class="facts" aria-label="Testgegevens">
+          <div class="fact">
+            <strong>45 seconden</strong>
+            <span>De test stopt automatisch.</span>
+          </div>
+          <div class="fact">
+            <strong>30 woorden</strong>
+            <span>Elke stimulus duurt 1,5 seconde.</span>
+          </div>
+          <div class="fact">
+            <strong>Mondeling</strong>
+            <span>Een begeleider kan fouten zelf turven.</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="button button-secondary" id="practiceButton" type="button">
+            Eerst oefenen
+          </button>
+          <button class="button button-primary" id="startButton" type="button">
+            Start de test
+          </button>
+        </div>
+        <p class="fine-print">
+          Een fout is een verkeerde kleur, een gecorrigeerd antwoord of geen antwoord vóór het
+          volgende woord. Deze pagina neemt niets op en bewaart geen gegevens.
+        </p>
+      </section>
+    </main>
+
+    <section class="stage" id="stage" aria-live="polite" aria-label="Strooptest">
+      <header class="stage-header">
+        <span id="modeLabel">Test</span>
+        <span id="trialLabel"></span>
+      </header>
+      <div class="stage-main">
+        <div class="countdown" id="countdown" aria-label="Aftellen"></div>
+        <div class="stimulus hidden" id="stimulus"></div>
+      </div>
+      <footer class="stage-footer">
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </footer>
+    </section>
+
+    <section class="shell hidden" id="finish">
+      <div class="card" aria-labelledby="finishTitle">
+        <p class="eyebrow">Klaar</p>
+        <h1 id="finishTitle">Test voltooid</h1>
+        <p class="result-number">45 sec</p>
+        <p class="lead">Er zijn 30 woorden aangeboden. Noteer eventueel het aantal fouten en gemiste antwoorden.</p>
+        <div class="actions">
+          <button class="button button-primary" id="repeatButton" type="button">Nogmaals uitvoeren</button>
+          <button class="button button-secondary" id="homeButton" type="button">Terug naar uitleg</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell hidden" id="practiceFinish">
+      <div class="card" aria-labelledby="practiceFinishTitle">
+        <p class="eyebrow">Oefenen voltooid</p>
+        <h1 id="practiceFinishTitle">Klaar voor de test?</h1>
+        <p class="lead">Tijdens de echte test verschijnen 30 woorden in precies 45 seconden.</p>
+        <div class="actions">
+          <button class="button button-primary" id="startAfterPracticeButton" type="button">Start de test</button>
+          <button class="button button-secondary" id="practiceAgainButton" type="button">Nogmaals oefenen</button>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      "use strict";
+
+      const COLORS = [
+        { name: "ROOD", value: "#ef3340" },
+        { name: "BLAUW", value: "#3284ff" },
+        { name: "GROEN", value: "#22c978" },
+        { name: "GEEL", value: "#ffd43b" },
+      ];
+
+      const TRIAL_MS = 1500;
+      const TEST_TRIALS = 30;
+      const PRACTICE_TRIALS = 8;
+
+      const home = document.getElementById("home");
+      const finish = document.getElementById("finish");
+      const practiceFinish = document.getElementById("practiceFinish");
+      const stage = document.getElementById("stage");
+      const countdown = document.getElementById("countdown");
+      const stimulus = document.getElementById("stimulus");
+      const progressBar = document.getElementById("progressBar");
+      const modeLabel = document.getElementById("modeLabel");
+      const trialLabel = document.getElementById("trialLabel");
+
+      let timers = [];
+      let audioContext;
+
+      function shuffle(items) {
+        const result = [...items];
+        for (let index = result.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [result[index], result[swapIndex]] = [result[swapIndex], result[index]];
+        }
+        return result;
+      }
+
+      function makeTrials(count) {
+        const congruentCount = Math.floor(count / 2);
+        const trials = [];
+
+        for (let index = 0; index < count; index += 1) {
+          const ink = COLORS[index % COLORS.length];
+          const isCongruent = index < congruentCount;
+          const word = isCongruent
+            ? ink
+            : COLORS[(index + 1 + (index % (COLORS.length - 1))) % COLORS.length];
+          trials.push({ word: word.name, ink: ink.value, isCongruent });
+        }
+
+        let randomized = shuffle(trials);
+        for (let attempt = 0; attempt < 20; attempt += 1) {
+          const hasAdjacentInk = randomized.some(
+            (trial, index) => index > 0 && trial.ink === randomized[index - 1].ink,
+          );
+          if (!hasAdjacentInk) break;
+          randomized = shuffle(trials);
+        }
+        return randomized;
+      }
+
+      function clearTimers() {
+        timers.forEach((timer) => clearTimeout(timer));
+        timers = [];
+      }
+
+      function tone(frequency, duration = 0.12) {
+        try {
+          audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+          const oscillator = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          oscillator.frequency.value = frequency;
+          gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.18, audioContext.currentTime + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+          oscillator.connect(gain);
+          gain.connect(audioContext.destination);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + duration);
+        } catch (error) {
+          // De test blijft bruikbaar wanneer een browser geluid blokkeert.
+        }
+      }
+
+      function showOnly(section) {
+        [home, finish, practiceFinish].forEach((item) => item.classList.add("hidden"));
+        stage.classList.remove("active");
+        section.classList.remove("hidden");
+      }
+
+      function requestFullscreen() {
+        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      }
+
+      function runSequence(isPractice) {
+        clearTimers();
+        requestFullscreen();
+        [home, finish, practiceFinish].forEach((item) => item.classList.add("hidden"));
+        stage.classList.add("active");
+        countdown.classList.remove("hidden");
+        stimulus.classList.add("hidden");
+        progressBar.style.width = "0%";
+        modeLabel.textContent = isPractice ? "Oefenronde" : "Strooptest · 45 seconden";
+        trialLabel.textContent = "";
+
+        let count = 3;
+        countdown.textContent = String(count);
+        tone(520);
+
+        const countTimer = window.setInterval(() => {
+          count -= 1;
+          if (count > 0) {
+            countdown.textContent = String(count);
+            tone(520);
+            return;
+          }
+          clearInterval(countTimer);
+          countdown.textContent = "START";
+          tone(860, 0.2);
+          timers.push(
+            setTimeout(() => {
+              countdown.classList.add("hidden");
+              beginTrials(isPractice);
+            }, 500),
+          );
+        }, 1000);
+        timers.push(countTimer);
+      }
+
+      function beginTrials(isPractice) {
+        const total = isPractice ? PRACTICE_TRIALS : TEST_TRIALS;
+        const trials = makeTrials(total);
+        const startTime = performance.now();
+        stimulus.classList.remove("hidden");
+
+        trials.forEach((trial, index) => {
+          timers.push(
+            setTimeout(() => {
+              stimulus.textContent = trial.word;
+              stimulus.style.color = trial.ink;
+              trialLabel.textContent = isPractice ? `${index + 1} van ${total}` : "Spreek de kleur uit";
+              progressBar.style.width = `${((index + 1) / total) * 100}%`;
+            }, index * TRIAL_MS),
+          );
+        });
+
+        timers.push(
+          setTimeout(() => {
+            stimulus.classList.add("hidden");
+            trialLabel.textContent = "";
+            tone(330, 0.45);
+            stage.classList.remove("active");
+            if (isPractice) {
+              practiceFinish.classList.remove("hidden");
+            } else {
+              finish.classList.remove("hidden");
+            }
+            const elapsed = performance.now() - startTime;
+            console.info(`Stimulusduur: ${Math.round(elapsed)} ms`);
+          }, total * TRIAL_MS),
+        );
+      }
+
+      document.getElementById("practiceButton").addEventListener("click", () => runSequence(true));
+      document.getElementById("startButton").addEventListener("click", () => runSequence(false));
+      document.getElementById("repeatButton").addEventListener("click", () => runSequence(false));
+      document.getElementById("homeButton").addEventListener("click", () => showOnly(home));
+      document.getElementById("startAfterPracticeButton").addEventListener("click", () => runSequence(false));
+      document.getElementById("practiceAgainButton").addEventListener("click", () => runSequence(true));
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          clearTimers();
+          showOnly(home);
+        }
+      });
+    </script>
+  </body>
+</html>
